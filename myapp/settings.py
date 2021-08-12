@@ -15,7 +15,6 @@ import os
 import environ
 
 env = environ.Env()
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,9 +81,9 @@ WSGI_APPLICATION = 'myapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('LOOKUP_DB_NAME'),
-        'USER': env('LOOKUP_DB_USER'),
-        'PASSWORD': env('LOOKUP_DB_PASSWORD'),
+        'NAME': env.read_env('LOOKUP_DB_NAME'),
+        'USER': env.read_env('LOOKUP_DB_USER'),
+        'PASSWORD': env.read_env('LOOKUP_DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '',
     },
