@@ -90,6 +90,9 @@ venv.bak/
 # mypy 
 .mypy_cache/ 
 
+# gunicorn
+*.sock
+
 # Sublime Text # 
 *.tmlanguage.cache 
 *.tmPreferences.cache 
