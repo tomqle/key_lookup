@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ key.name }}</h2>
+  <ul class="list-group">
+  {% for vehicle in vehicles %}
+    <li class="list-group-item">{{ vehicle.vehicle_range }}</li>
+  {% endfor %}
+  </ul>
+{% endblock %}
