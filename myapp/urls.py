@@ -22,7 +22,7 @@ from lookup.views import HomeView, KeyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HomeView.as_view(), name='home'),
+    path('keys/', HomeView.as_view(), name='home'),
     path('keys/<int:id>/', KeyView.as_view(), name='key'),
 ]
 #] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
