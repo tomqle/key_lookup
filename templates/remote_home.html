@@ -4,7 +4,7 @@
   <h2>Remotes</h2>
   <ul class="list-group">
   {% for remote in remotes %}
-    <a href="{% url 'home' %}/{{ key.id }}"><li class="list-group-item">{{ remote.name }}</li></a>
+    <a href="{% url 'home' %}/{{ remote.id }}"><li class="list-group-item">{{ remote.name }}</li></a>
   {% endfor %}
   </ul>
 {% endblock %}
