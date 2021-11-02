@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-oq09k%k1(m%wnpmrf$%l-*25y_afvcmz(lvorf#9cq4=t(01$g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.lock-labs.com', '72.52.228.213']
+ALLOWED_HOSTS = ['.lock-labs.com', '72.52.228.213', 'localhost']
 
 
 # Application definition
