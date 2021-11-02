@@ -4,7 +4,7 @@
   <h2>Keys</h2>
   <ul class="list-group">
   {% for key in keys %}
-    <a href="{% url 'home' %}/{{ key.id }}"><li class="list-group-item">{{ key.name }}</li></a>
+    <a href="{% url 'home' %}{{ key.id }}"><li class="list-group-item">{{ key.name }}</li></a>
   {% endfor %}
   </ul>
 {% endblock %}
