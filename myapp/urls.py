@@ -17,12 +17,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import RedirectView
 
-from lookup.views import HomeView, KeyView
+from lookup.views import HomeView, KeyView, RemoteHomeView, RemoteView
+
+admin.site.site_header = "Keys Lookup Admin"
+admin.site.site_title = "Keys Lookup Portal"
+admin.site.index_title = "Welcome to the Keys Lookup Admin Portal"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('keys/', HomeView.as_view(), name='home'),
     path('keys/<int:id>/', KeyView.as_view(), name='key'),
+    path('remotes/', RemoteHomeView.as_view(), name='remote_home'),
+    path('remotes/<int:id>/', RemoteView.as_view(), name='remote'),
+    path('/', RedirectView.as_view(url='keys/', permanent=False), name='index'),
 ]
 #] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
