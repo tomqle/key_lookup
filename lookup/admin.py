@@ -1,5 +1,5 @@
 from django.contrib import admin
-from lookup.models import Key, Remote, VehicleApplication
+from lookup.models import Key, Remote, VehicleApplication, Distributor, DistributorKey
 
 # Register your models here.
 
@@ -17,3 +17,15 @@ class RemoteAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
         ]
+
+class DistributorKeyInLine(admin.TabularInline):
+    model = DistributorKey
+
+@admin.register(Distributor)
+class DistributorAdmin(admin.ModelAdmin):
+    inlines = [
+        DistributorKeyInLine,
+    ]
+
+    readonly_fields = ('code', )
+

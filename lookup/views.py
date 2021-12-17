@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
-from lookup.models import Key, Remote
+from lookup.models import Key, Remote, Distributor, DistributorKey
 
 # Create your views here.
 
@@ -21,6 +21,14 @@ class KeyView(TemplateView):
         key = Key.objects.get(id=kwargs['id'])
         context['key'] = key
         context['vehicles'] = key.vehicleapplication_set.order_by('vehicle_range').all()
+        if self.request.GET.get('d'):
+            distributors = Distributor.objects.filter(code=self.request.GET.get('d'))
+            if distributors:
+                if distributors[0].logo:
+                    context['logo_url'] = distributors[0].logo.url
+                distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=key)
+                if distributor_keys:
+                    context['link'] = distributor_keys[0].link
         return context
 
 class RemoteHomeView(TemplateView):

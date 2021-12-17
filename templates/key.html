@@ -1,10 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
+  {% if logo_url %}<img src="{{ logo_url }}" alt="logo" height="75px">{% endif %}
   <h2>{{ key.name }}</h2>
   <ul class="list-group">
   {% for vehicle in vehicles %}
     <li class="list-group-item">{{ vehicle.vehicle_range }}</li>
   {% endfor %}
   </ul>
+  {% if link %}
+    <p>Buy Here:<br><a id="buy_link" href="{{ link }}">{{ link }}</a></p>
+  {% endif %}
+{% endblock %}
+
+{% block javascript %}
+  {{ block.super }}
+  <!--script>
+      $(document).ready(function() {
+          if ($("#buy_link").html().length > 0) {
+              var buy_link = $("#buy_link").html();
+              console.log(buy_link);
+              $.ajax({
+                  url: buy_link,
+                  type: "GET",
+                  cache: false,
+                  dataType: "jsonp",
+                  success: function(data) {
+                      var mtitle = $(data).filter('meta[property="og:title"]').attr("content");
+                      //var mdesc = $(data).filter('meta[property="og:description"]').attr("content");
+                      //var mimage = $(data).filter('meta[property="og:image"]').attr("content");
+
+                      if(!mtitle) {
+                          mtitle = $(data).filter('title');
+                      }
+
+                      console.log(mtitle);
+                      //console.log(mdesc);
+                      //console.log(mimage);
+                  }
+              });
+          }
+      })
+
+      function get_link_metadata(data) {
+          var mdesc = $(data).filter('meta[property="og:description"]').attr("content");
+          var mauthor = $(data).filter('meta[property="og:author"]').attr("content");
+          var mkeywords = $(data).filter('meta[property="og:keywords"]').attr("content");
+          //var mtitle = $(data).filter('meta[property="og:title"').attr("content");
+
+          console.log(mdesc);
+          console.log(mauthor);
+          console.log(mkeywords);
+          //console.log(mtitle);
+      }
+  </script-->
 {% endblock %}

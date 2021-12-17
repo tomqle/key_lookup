@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-oq09k%k1(m%wnpmrf$%l-*25y_afvcmz(lvorf#9cq4=t(01$g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.lock-labs.com', '72.52.228.213', 'localhost']
+ALLOWED_HOSTS = ['.lock-labs.com', '72.52.228.213', 'localhost', '127.0.0.1', '127.0.0.1:8000']
 
 
 # Application definition
@@ -139,4 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SECURE_SSL_REDIRECT = True
+#SECURE_SSL_REDIRECT = True
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
