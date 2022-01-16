@@ -29,6 +29,7 @@ class Distributor(models.Model):
     name = models.CharField(max_length=255, unique=True)
     code = models.CharField(max_length=16, blank=True, null=True, unique=True, editable=False)
     logo = models.ImageField(upload_to='distributor_logos/', blank=True, null=True)
+    website = models.URLField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.id:

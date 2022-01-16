@@ -29,6 +29,8 @@ class KeyView(TemplateView):
                 distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=key)
                 if distributor_keys:
                     context['link'] = distributor_keys[0].link
+                else:
+                    context['link'] = distributors[0].website
         return context
 
 class RemoteHomeView(TemplateView):
