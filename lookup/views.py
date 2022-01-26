@@ -26,6 +26,9 @@ class KeyView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                if distributors[0].website:
+                    context['website'] = distributors[0].website
+
                 distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=key)
                 if distributor_keys:
                     context['link'] = distributor_keys[0].link
@@ -54,6 +57,9 @@ class RemoteView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                if distributors[0].website:
+                    context['website'] = distributors[0].website
+
                 distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=remote.key_ptr)
                 if distributor_keys:
                     context['link'] = distributor_keys[0].link
