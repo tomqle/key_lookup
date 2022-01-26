@@ -49,5 +49,15 @@ class RemoteView(TemplateView):
         remote = Remote.objects.get(id=kwargs['id'])
         context['remote'] = remote
         context['vehicles'] = remote.vehicleapplication_set.order_by('vehicle_range').all()
+        if self.request.GET.get('d'):
+            distributors = Distributor.objects.filter(code=self.request.GET.get('d'))
+            if distributors:
+                if distributors[0].logo:
+                    context['logo_url'] = distributors[0].logo.url
+                distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=remote.key_ptr)
+                if distributor_keys:
+                    context['link'] = distributor_keys[0].link
+                else:
+                    context['link'] = distributors[0].website
         return context
 
