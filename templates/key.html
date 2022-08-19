@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% if logo_url %}<img src="{{ logo_url }}" alt="logo" height="75px">{% endif %}
+  {% if logo_url %}
+    {% if website %}
+      <a target="_blank" href="{{ website }}"><img src="{{ logo_url }}" alt="logo" height="75px"></a>
+    {% else %}
+      <img src="{{ logo_url }}" alt="logo" height="75px">
+    {% endif %}
+  {% endif %}
   <h2>{{ key.name }}</h2>
   <ul class="list-group">
   {% for vehicle in vehicles %}
