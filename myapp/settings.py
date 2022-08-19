@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-oq09k%k1(m%wnpmrf$%l-*25y_afvcmz(lvorf#9cq4=t(01$g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.supportedvehicles.com', '.lock-labs.com', '72.52.228.213', 'localhost', '127.0.0.1', '127.0.0.1:8000']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '127.0.0.1:8000']
 
 
 # Application definition
@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'myapp.wsgi.application'
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        #'NAME': 'keylookup',
-        #'USER': 'keylookupuser',
-        #'PASSWORD': 'NatureValley6604',
+        #'NAME': '',
+        #'USER': '',
+        #'PASSWORD': '',
         #'HOST': 'localhost',
         #'PORT': '',
     #},
