@@ -11,6 +11,14 @@ class Key(models.Model):
     def __str__(self):
         return self.name
 
+class KeyShell(models.Model):
+    name = models.CharField(max_length=255)
+    key = models.ForeignKey(Key, on_delete=models.PROTECT, blank=True, null=True)
+    sku = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 class Remote(Key):
     sku = models.CharField(max_length=255)
     fcc = models.CharField(max_length=255, blank=True, null=True)
@@ -18,8 +26,27 @@ class Remote(Key):
     def __str__(self):
         return self.name
 
+class RemoteShell(models.Model):
+    name = models.CharField(max_length=255)
+    remote = models.ForeignKey(Remote, on_delete=models.PROTECT, blank=True, null=True)
+    sku = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+class EmergencyKey(models.Model):
+    name = models.CharField(max_length=255)
+    remote = models.ForeignKey(Remote, on_delete=models.PROTECT, blank=True, null=True)
+    sku = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 class VehicleApplication(models.Model):
     key = models.ForeignKey(Key, on_delete=models.CASCADE, blank=True, null=True)
+    key_shell = models.ForeignKey(KeyShell, on_delete=models.CASCADE, blank=True, null=True)
+    remote_shell = models.ForeignKey(RemoteShell, on_delete=models.CASCADE, blank=True, null=True)
+    emergency_key = models.ForeignKey(EmergencyKey, on_delete=models.CASCADE, blank=True, null=True)
     vehicle_range = models.CharField(max_length=255)
 
     def __str__(self):

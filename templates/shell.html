@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if logo_url %}
+    {% if website %}
+      <a target="_blank" href="{{ website }}"><img src="{{ logo_url }}" alt="logo" height="75px"></a>
+    {% else %}
+      <img src="{{ logo_url }}" alt="logo" height="75px">
+    {% endif %}
+  {% endif %}
+  <h2>{{ shell.name }}</h2>
+  <ul class="list-group">
+  {% for vehicle in vehicles %}
+    <li class="list-group-item">{{ vehicle.vehicle_range }}</li>
+  {% endfor %}
+  </ul>
+  {% if link %}
+    <br>
+    <p><a id="buy_link" class="btn btn-primary" target="_blank" href="{{ link }}">Buy Here</a></p>
+  {% endif %}
+{% endblock %}

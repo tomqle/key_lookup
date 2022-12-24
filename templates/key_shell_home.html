@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Key Shells</h2>
+  <ul class="list-group">
+  {% for key_shell in key_shells %}
+    <a href="{% url 'key_shell_home' %}{{ key_shell.id }}"><li class="list-group-item">{{ key_shell.name }}</li></a>
+  {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Emergency Key</h2>
+  <ul class="list-group">
+  {% for emergency_key in emergency_keys %}
+    <a href="{% url 'emergency_key_home' %}{{ emergency_key.id }}"><li class="list-group-item">{{ emergency_key.name }}</li></a>
+  {% endfor %}
+  </ul>
+{% endblock %}
