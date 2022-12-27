@@ -12,9 +12,13 @@ class KeyAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
         ]
+    def get_queryset(self, request):
+        ids = Remote.objects.values_list('id', flat=True)
+        queryset = Key.objects.exclude(id__in=ids)
+
+        return queryset
 
     list_display = ('name', 'id', )
-
     readonly_fields = ('id', )
 
 @admin.register(Remote)
@@ -24,7 +28,6 @@ class RemoteAdmin(admin.ModelAdmin):
         ]
 
     list_display = ('name', 'id', )
-
     readonly_fields = ('id', )
 
 @admin.register(KeyShell)
@@ -34,8 +37,8 @@ class KeyShellAdmin(admin.ModelAdmin):
         ]
 
     list_display = ('name', 'id', )
-
     readonly_fields = ('id', )
+    exclude = ('key', )
 
 @admin.register(RemoteShell)
 class RemoteShellAdmin(admin.ModelAdmin):
@@ -44,8 +47,8 @@ class RemoteShellAdmin(admin.ModelAdmin):
         ]
 
     list_display = ('name', 'id', )
-
     readonly_fields = ('id', )
+    exclude = ('remote', )
 
 @admin.register(EmergencyKey)
 class EmergencyKeyAdmin(admin.ModelAdmin):
@@ -54,7 +57,6 @@ class EmergencyKeyAdmin(admin.ModelAdmin):
         ]
 
     list_display = ('name', 'id', )
-
     readonly_fields = ('id', )
 
 class DistributorKeyInLine(admin.TabularInline):
@@ -67,5 +69,4 @@ class DistributorAdmin(admin.ModelAdmin):
     ]
 
     list_display = ('name', 'code', )
-
     readonly_fields = ('code', 'id', )

@@ -9,8 +9,10 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
+        ids = Remote.objects.values_list('id', flat=True)
+
         context = super().get_context_data(**kwargs)
-        context['keys'] = Key.objects.order_by('name').all()
+        context['keys'] = Key.objects.order_by('name').exclude(id__in=ids)
         return context
 
 class KeyView(TemplateView):
