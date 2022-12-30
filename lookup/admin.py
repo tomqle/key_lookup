@@ -1,10 +1,5 @@
 from django.contrib import admin
-from django.http import HttpResponse
 from lookup.models import Key, Remote, VehicleApplication, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey
-from lookup.management.commands.import_product_data import Command
-
-from datetime import datetime
-import pytz
 
 # Register your models here.
 
@@ -22,25 +17,7 @@ class KeyAdmin(admin.ModelAdmin):
         queryset = Key.objects.exclude(id__in=ids)
 
         return queryset
-    
-    def export_as_excel(self, request, queryset):
 
-        timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
-        filename = 'key_export_' + timestamp + '.xlsx'
-        path = 'static/excel/' + filename
-
-        com = Command()
-        com._generate_product_data_output_workbook(queryset, path)
-
-        with open(path, "rb") as excel:
-            data = excel.read()
-
-            response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=' + filename
-
-        return response
-
-    actions = ('export_as_excel',)
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
 
@@ -50,24 +27,6 @@ class RemoteAdmin(admin.ModelAdmin):
         VehicleApplicationInLine,
         ]
 
-    def export_as_excel(self, request, queryset):
-        timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
-        filename = 'remote_export_' + timestamp + '.xlsx'
-        path = 'static/excel/' + filename
-
-        com = Command()
-        com._generate_product_data_output_workbook(queryset, path)
-
-        with open(path, "rb") as excel:
-            data = excel.read()
-
-            response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=' + filename
-
-        return response
-
-    actions = ('export_as_excel',)
-
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
 
@@ -76,24 +35,6 @@ class KeyShellAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
         ]
-
-    def export_as_excel(self, request, queryset):
-        timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
-        filename = 'key_shell_export_' + timestamp + '.xlsx'
-        path = 'static/excel/' + filename
-
-        com = Command()
-        com._generate_product_data_output_workbook(queryset, path)
-
-        with open(path, "rb") as excel:
-            data = excel.read()
-
-            response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=' + filename
-
-        return response
-
-    actions = ('export_as_excel',)
 
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
@@ -105,24 +46,6 @@ class RemoteShellAdmin(admin.ModelAdmin):
         VehicleApplicationInLine,
         ]
 
-    def export_as_excel(self, request, queryset):
-        timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
-        filename = 'remote_shell_export_' + timestamp + '.xlsx'
-        path = 'static/excel/' + filename
-
-        com = Command()
-        com._generate_product_data_output_workbook(queryset, path)
-
-        with open(path, "rb") as excel:
-            data = excel.read()
-
-            response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=' + filename
-
-        return response
-
-    actions = ('export_as_excel',)
-
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
     exclude = ('remote', )
@@ -132,24 +55,6 @@ class EmergencyKeyAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
         ]
-
-    def export_as_excel(self, request, queryset):
-        timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
-        filename = 'emergency_key_export_' + timestamp + '.xlsx'
-        path = 'static/excel/' + filename
-
-        com = Command()
-        com._generate_product_data_output_workbook(queryset, path)
-
-        with open(path, "rb") as excel:
-            data = excel.read()
-
-            response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=' + filename
-
-        return response
-
-    actions = ('export_as_excel',)
 
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
