@@ -175,17 +175,20 @@ class Command(BaseCommand):
         i = 2
         for product in products:
             sheet['A' + str(i)] = product.id
-            sheet['B' + str(i)] = product.sku
             sheet['C' + str(i)] = product.name
-            if isinstance(product, Key):
-                sheet['D' + str(i)] = 'Key'
-            elif isinstance(product, Remote):
+            if isinstance(product, Remote):
+                sheet['B' + str(i)] = product.sku
                 sheet['D' + str(i)] = 'Remote'
+            elif isinstance(product, Key):
+                sheet['D' + str(i)] = 'Key'
             elif isinstance(product, KeyShell):
+                sheet['B' + str(i)] = product.sku
                 sheet['D' + str(i)] = 'Key Shell'
             elif isinstance(product, RemoteShell):
+                sheet['B' + str(i)] = product.sku
                 sheet['D' + str(i)] = 'Remote Shell'
             elif isinstance(product, EmergencyKey):
+                sheet['B' + str(i)] = product.sku
                 sheet['D' + str(i)] = 'Emergency Key'
 
             i += 1
