@@ -1,5 +1,3 @@
-from math import prod
-from tkinter import W
 from django.core.management.base import BaseCommand
 from logging import getLogger
 
