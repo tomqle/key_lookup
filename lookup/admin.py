@@ -67,7 +67,6 @@ class RemoteAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
 
@@ -94,7 +93,6 @@ class KeyShellAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
     exclude = ('key', )
@@ -122,7 +120,6 @@ class RemoteShellAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
     exclude = ('remote', )
@@ -150,7 +147,6 @@ class EmergencyKeyAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
 
