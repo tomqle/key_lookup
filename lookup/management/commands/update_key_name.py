@@ -102,19 +102,21 @@ class Command(BaseCommand):
         emergency_keys = []
 
         for p in product_data:
-            product.name = p['name']
-
             if p['type'].lower() == 'key' or p['type'].lower() == 'remote':
                 product = Key.objects.get(id=p['id'])
+                product.name = p['name']
                 keys.append(product)
             elif p['type'].lower() == 'key shell':
                 product = KeyShell.objects.get(id=p['id'])
+                product.name = p['name']
                 key_shells.append(product)
             elif p['type'].lower() == 'remote shell':
                 product = RemoteShell.objects.get(id=p['id'])
+                product.name = p['name']
                 remote_shells.append(product)
             elif p['type'].lower() == 'emergency key':
                 product = EmergencyKey.objects.get(id=p['id'])
+                product.name = p['name']
                 emergency_keys.append(product)
             else:
                raise ValueError('Type field value is invalid')
