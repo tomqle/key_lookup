@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from logging import getLogger
 
-from lookup.models import Key, KeyShell, Remote, RemoteShell, EmergencyKey, VehicleApplication
+from lookup.models import Key, KeyShell, Remote, RemoteShell, EmergencyKey, VehicleApplication, TransponderKey
 
 import openpyxl
 from datetime import datetime
@@ -179,6 +179,9 @@ class Command(BaseCommand):
             if isinstance(product, Remote):
                 sheet['B' + str(i)] = product.sku
                 sheet['D' + str(i)] = 'Remote'
+            if isinstance(product, TransponderKey):
+                sheet['B' + str(i)] = product.sku
+                sheet['D' + str(i)] = 'Transponder Key'
             elif isinstance(product, Key):
                 sheet['D' + str(i)] = 'Key'
             elif isinstance(product, KeyShell):
@@ -210,6 +213,12 @@ class Command(BaseCommand):
                 return keys[0]
             else:
                 return Key.objects.create(sku=product_data.get('sku'), name=product_data.get('name'))
+        elif product_data.get('type').lower() == 'transponder key':
+            keys = TransponderKey.objects.filter(sku=product_data.get('sku'))
+            if keys:
+                return keys[0]
+            else:
+                return TransponderKey.objects.create(sku=product_data.get('sku'), name=product_data.get('name'))
         elif product_data.get('type').lower() == 'remote':
             remotes = Remote.objects.filter(sku=product_data.get('sku'))
             if remotes:
@@ -242,19 +251,23 @@ class Command(BaseCommand):
         if remotes:
             return remotes[0]
         else:
-            key_shells = KeyShell.objects.filter(sku=sku)
-            if key_shells:
-                return key_shells[0]
+            transponder_keys = TransponderKey.objects.filter(sku=sku)
+            if transponder_keys:
+                return transponder_keys[0]
             else:
-                remote_shells = RemoteShell.objects.filter(sku=sku)
-                if remote_shells:
-                    return remote_shells[0]
+                key_shells = KeyShell.objects.filter(sku=sku)
+                if key_shells:
+                    return key_shells[0]
                 else:
-                    emergency_keys = EmergencyKey.objects.filter(sku=sku)
-                    if emergency_keys:
-                        return emergency_keys[0]
+                    remote_shells = RemoteShell.objects.filter(sku=sku)
+                    if remote_shells:
+                        return remote_shells[0]
                     else:
-                        return None
+                        emergency_keys = EmergencyKey.objects.filter(sku=sku)
+                        if emergency_keys:
+                            return emergency_keys[0]
+                        else:
+                            return None
 
     
         
