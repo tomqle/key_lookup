@@ -83,7 +83,6 @@ class Command(BaseCommand):
                 print('ID field is int')
             else:
                 print('ID field is invalid')
-                raise ValueError('ID field value is invalid')
 
             name = str(sheet.cell(row, self.COL_INDEX_NAME_1).value)
             typename = str(sheet.cell(row, self.COL_INDEX_TYPE_1).value)
