@@ -77,12 +77,11 @@ class Command(BaseCommand):
         for row in range(2, sheet.max_row + 1):
             if isinstance(sheet.cell(row, self.COL_INDEX_ID_1).value, float):
                 id1 = int(sheet.cell(row, self.COL_INDEX_ID_1).value)
-                print('ID field is float')
             elif isinstance(sheet.cell(row, self.COL_INDEX_ID_1).value, int):
                 id1 = sheet.cell(row, self.COL_INDEX_ID_1).value
-                print('ID field is int')
             else:
                 print('ID field is invalid')
+                continue
 
             name = str(sheet.cell(row, self.COL_INDEX_NAME_1).value)
             typename = str(sheet.cell(row, self.COL_INDEX_TYPE_1).value)
