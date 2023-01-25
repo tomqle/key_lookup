@@ -211,15 +211,15 @@ class Command(BaseCommand):
                 sheet['A' + str(i)] = link.id
                 sheet['C' + str(i)] = link.distributor.name
                 sheet['D' + str(i)] = link.link
-                if isinstance(link, Remote):
+                if isinstance(link, DistributorRemote):
                     sheet['B' + str(i)] = 'Remote'
-                if isinstance(link, TransponderKey):
+                if isinstance(link, DistributorTransponderKey):
                     sheet['B' + str(i)] = 'Transponder Key'
-                elif isinstance(link, KeyShell):
+                elif isinstance(link, DistributorKeyShell):
                     sheet['B' + str(i)] = 'Key Shell'
-                elif isinstance(link, RemoteShell):
+                elif isinstance(link, DistributorRemoteShell):
                     sheet['B' + str(i)] = 'Remote Shell'
-                elif isinstance(link, EmergencyKey):
+                elif isinstance(link, DistributorEmergencyKey):
                     sheet['B' + str(i)] = 'Emergency Key'
 
                 i += 1
