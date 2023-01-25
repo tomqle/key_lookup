@@ -86,3 +86,43 @@ class DistributorKey(models.Model):
 
     class Meta:
         unique_together = ('distributor', 'key')
+
+class DistributorTransponderKey(models.Model):
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    transponder_key = models.ForeignKey(TransponderKey, on_delete=models.CASCADE)
+    link = models.URLField(max_length=1024, blank=True)
+
+    class Meta:
+        unique_together = ('distributor', 'transponder_key')
+
+class DistributorRemote(models.Model):
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    remote = models.ForeignKey(Remote, on_delete=models.CASCADE)
+    link = models.URLField(max_length=1024, blank=True)
+
+    class Meta:
+        unique_together = ('distributor', 'remote')
+
+class DistributorKeyShell(models.Model):
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    key_shell = models.ForeignKey(KeyShell, on_delete=models.CASCADE)
+    link = models.URLField(max_length=1024, blank=True)
+
+    class Meta:
+        unique_together = ('distributor', 'key_shell')
+
+class DistributorRemoteShell(models.Model):
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    remote_shell = models.ForeignKey(RemoteShell, on_delete=models.CASCADE)
+    link = models.URLField(max_length=1024, blank=True)
+
+    class Meta:
+        unique_together = ('distributor', 'remote_shell')
+
+class DistributorEmergencyKey(models.Model):
+    distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
+    emergency_key = models.ForeignKey(EmergencyKey, on_delete=models.CASCADE)
+    link = models.URLField(max_length=1024, blank=True)
+
+    class Meta:
+        unique_together = ('distributor', 'emergency_key')

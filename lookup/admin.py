@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponse
-from lookup.models import Key, Remote, VehicleApplication, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey
+from lookup.models import Key, Remote, VehicleApplication, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey, TransponderKey, DistributorTransponderKey, DistributorRemote, DistributorKeyShell, DistributorRemoteShell, DistributorEmergencyKey
 from lookup.management.commands.import_product_data import Command
 
 from datetime import datetime
@@ -153,10 +153,38 @@ class EmergencyKeyAdmin(admin.ModelAdmin):
 class DistributorKeyInLine(admin.TabularInline):
     model = DistributorKey
 
+    def get_queryset(self, request):
+        remote_ids = Remote.objects.values_list('id', flat=True)
+        key_ids = Key.objects.exclude(id__in=remote_ids).values_list('id', flat=True)
+
+        queryset = DistributorKey.objects.filter(key_id__in=key_ids)
+
+        return queryset
+
+class DistributorTransponderKeyInLine(admin.TabularInline):
+    model = DistributorTransponderKey
+
+class DistributorRemoteInLine(admin.TabularInline):
+    model = DistributorRemote
+
+class DistributorKeyShellInLine(admin.TabularInline):
+    model = DistributorKeyShell
+
+class DistributorRemoteShellInLine(admin.TabularInline):
+    model = DistributorRemoteShell
+
+class DistributorEmergencyKeyInLine(admin.TabularInline):
+    model = DistributorEmergencyKey
+
 @admin.register(Distributor)
 class DistributorAdmin(admin.ModelAdmin):
     inlines = [
         DistributorKeyInLine,
+        DistributorTransponderKeyInLine,
+        DistributorRemoteInLine,
+        DistributorKeyShellInLine,
+        DistributorRemoteShellInLine,
+        DistributorEmergencyKeyInLine,
     ]
 
     list_display = ('name', 'code', )
