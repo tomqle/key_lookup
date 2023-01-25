@@ -180,11 +180,11 @@ class DistributorEmergencyKeyInLine(admin.TabularInline):
 class DistributorAdmin(admin.ModelAdmin):
     inlines = [
         DistributorKeyInLine,
-        DistributorTransponderKeyInLine,
-        DistributorRemoteInLine,
-        DistributorKeyShellInLine,
-        DistributorRemoteShellInLine,
-        DistributorEmergencyKeyInLine,
+        #DistributorTransponderKeyInLine,
+        #DistributorRemoteInLine,
+        #DistributorKeyShellInLine,
+        #DistributorRemoteShellInLine,
+        #DistributorEmergencyKeyInLine,
     ]
 
     list_display = ('name', 'code', )
