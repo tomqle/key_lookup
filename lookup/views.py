@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
-from lookup.models import Key, Remote, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey
+from lookup.models import Key, Remote, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey, DistributorTransponderKey, DistributorRemote, DistributorKeyShell, DistributorRemoteShell, DistributorEmergencyKey
 
 # Create your views here.
 
@@ -62,9 +62,9 @@ class RemoteView(TemplateView):
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
-                distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=remote.key_ptr)
-                if distributor_keys:
-                    context['link'] = distributor_keys[0].link
+                distributor_remotes = DistributorRemote.objects.filter(distributor=distributors[0], remote=remote)
+                if distributor_remotes:
+                    context['link'] = distributor_remotes[0].link
                 else:
                     context['link'] = distributors[0].website
         return context
@@ -93,9 +93,9 @@ class ShellView(TemplateView):
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
-                distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=remote.key_ptr)
-                if distributor_keys:
-                    context['link'] = distributor_keys[0].link
+                distributor_key_shells = DistributorKeyShell.objects.filter(distributor=distributors[0], key_shell=shell)
+                if distributor_key_shells:
+                    context['link'] = distributor_key_shells[0].link
                 else:
                     context['link'] = distributors[0].website
         return context
@@ -124,14 +124,12 @@ class KeyShellView(TemplateView):
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
-                #distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=remote.key_ptr)
-                #if distributor_keys:
-                    #context['link'] = distributor_keys[0].link
-                #else:
-                    #context['link'] = distributors[0].website
+                distributor_key_shells = DistributorKeyShell.objects.filter(distributor=distributors[0], key_shell=key_shell)
+                if distributor_key_shells:
+                    context['link'] = distributor_key_shells[0].link
+                else:
+                    context['link'] = distributors[0].website
 
-                context['link'] = distributors[0].website
-                
         return context
 
 class RemoteShellHomeView(TemplateView):
@@ -158,14 +156,12 @@ class RemoteShellView(TemplateView):
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
-                #distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=remote.key_ptr)
-                #if distributor_keys:
-                    #context['link'] = distributor_keys[0].link
-                #else:
-                    #context['link'] = distributors[0].website
+                distributor_remote_shells = DistributorRemoteShell.objects.filter(distributor=distributors[0], remote_shell=remote_shell)
+                if distributor_remote_shells:
+                    context['link'] = distributor_remote_shells[0].link
+                else:
+                    context['link'] = distributors[0].website
 
-                context['link'] = distributors[0].website
-                
         return context
 
 class EmergencyKeyHomeView(TemplateView):
@@ -192,12 +188,10 @@ class EmergencyKeyView(TemplateView):
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
-                #distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=remote.key_ptr)
-                #if distributor_keys:
-                    #context['link'] = distributor_keys[0].link
-                #else:
-                    #context['link'] = distributors[0].website
+                distributor_emergency_keys = DistributorEmergencyKey.objects.filter(distributor=distributors[0], emergency_key=emergency_key)
+                if distributor_emergency_keys:
+                    context['link'] = distributor_emergency_keys[0].link
+                else:
+                    context['link'] = distributors[0].website
 
-                context['link'] = distributors[0].website
-                
         return context

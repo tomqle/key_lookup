@@ -208,18 +208,22 @@ class Command(BaseCommand):
         i = 2
         for link in links:
             if link:
-                sheet['A' + str(i)] = link.id
                 sheet['C' + str(i)] = link.distributor.name
                 sheet['D' + str(i)] = link.link
                 if isinstance(link, DistributorRemote):
+                    sheet['A' + str(i)] = link.remote_id
                     sheet['B' + str(i)] = 'Remote'
                 if isinstance(link, DistributorTransponderKey):
+                    sheet['A' + str(i)] = link.transponder_key_id
                     sheet['B' + str(i)] = 'Transponder Key'
                 elif isinstance(link, DistributorKeyShell):
+                    sheet['A' + str(i)] = link.key_shell_id
                     sheet['B' + str(i)] = 'Key Shell'
                 elif isinstance(link, DistributorRemoteShell):
+                    sheet['A' + str(i)] = link.remote_shell_id
                     sheet['B' + str(i)] = 'Remote Shell'
                 elif isinstance(link, DistributorEmergencyKey):
+                    sheet['A' + str(i)] = link.emergency_key_id
                     sheet['B' + str(i)] = 'Emergency Key'
 
                 i += 1
