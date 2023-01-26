@@ -12,21 +12,48 @@ class VehicleApplicationInLine(admin.TabularInline):
     model = VehicleApplication
     fields = ('vehicle_range',)
 
-@admin.register(Key)
-class KeyAdmin(admin.ModelAdmin):
+#@admin.register(Key)
+#class KeyAdmin(admin.ModelAdmin):
+    #inlines = [
+        #VehicleApplicationInLine,
+        #]
+    #def get_queryset(self, request):
+        #ids = Remote.objects.values_list('id', flat=True)
+        #queryset = Key.objects.exclude(id__in=ids)
+
+        #return queryset
+    
+    #def export_as_excel(self, request, queryset):
+
+        #timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
+        #filename = 'key_export_' + timestamp + '.xlsx'
+        #path = 'static/excel/' + filename
+
+        #com = Command()
+        #com._generate_product_data_output_workbook(queryset, path)
+
+        #with open(path, "rb") as excel:
+            #data = excel.read()
+
+            #response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            #response['Content-Disposition'] = 'attachment; filename=' + filename
+
+        #return response
+
+    #actions = ('export_as_excel',)
+    #list_display = ('name', 'id', )
+    #readonly_fields = ('id', )
+
+@admin.register(TransponderKey)
+class TransponderKey(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
-        ]
-    def get_queryset(self, request):
-        ids = Remote.objects.values_list('id', flat=True)
-        queryset = Key.objects.exclude(id__in=ids)
+    ]
 
-        return queryset
-    
     def export_as_excel(self, request, queryset):
 
         timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
-        filename = 'key_export_' + timestamp + '.xlsx'
+        filename = 'transponder_key_export_' + timestamp + '.xlsx'
         path = 'static/excel/' + filename
 
         com = Command()
@@ -43,6 +70,7 @@ class KeyAdmin(admin.ModelAdmin):
     actions = ('export_as_excel',)
     list_display = ('name', 'id', )
     readonly_fields = ('id', )
+
 
 @admin.register(Remote)
 class RemoteAdmin(admin.ModelAdmin):
