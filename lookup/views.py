@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
-from lookup.models import Key, Remote, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey, DistributorTransponderKey, DistributorRemote, DistributorKeyShell, DistributorRemoteShell, DistributorEmergencyKey
+from lookup.models import Key, Remote, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey, DistributorTransponderKey, DistributorRemote, DistributorKeyShell, DistributorRemoteShell, DistributorEmergencyKey, TransponderKey
 
 # Create your views here.
 
@@ -20,7 +20,7 @@ class KeyView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        key = Key.objects.get(id=kwargs['id'])
+        key = TransponderKey.objects.get(id=kwargs['id'])
         context['key'] = key
         context['vehicles'] = key.vehicleapplication_set.order_by('vehicle_range').all()
         if self.request.GET.get('d'):
@@ -31,7 +31,7 @@ class KeyView(TemplateView):
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
-                distributor_keys = DistributorKey.objects.filter(distributor=distributors[0], key=key)
+                distributor_keys = DistributorTransponderKey.objects.filter(distributor=distributors[0], key=key)
                 if distributor_keys:
                     context['link'] = distributor_keys[0].link
                 else:
