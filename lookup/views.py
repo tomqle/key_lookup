@@ -20,9 +20,9 @@ class KeyView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        key = TransponderKey.objects.get(id=kwargs['id'])
-        context['key'] = key
-        context['vehicles'] = key.vehicleapplication_set.order_by('vehicle_range').all()
+        transponder_key = TransponderKey.objects.get(id=kwargs['id'])
+        context['key'] = transponder_key
+        context['vehicles'] = transponder_key.vehicleapplication_set.order_by('vehicle_range').all()
         if self.request.GET.get('d'):
             distributors = Distributor.objects.filter(code=self.request.GET.get('d'))
             if distributors:
@@ -31,7 +31,7 @@ class KeyView(TemplateView):
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
-                distributor_keys = DistributorTransponderKey.objects.filter(distributor=distributors[0], key=key)
+                distributor_keys = DistributorTransponderKey.objects.filter(distributor=distributors[0], transponder_key=transponder_key)
                 if distributor_keys:
                     context['link'] = distributor_keys[0].link
                 else:
