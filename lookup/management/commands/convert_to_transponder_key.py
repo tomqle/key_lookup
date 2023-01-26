@@ -87,17 +87,26 @@ class Command(BaseCommand):
         output_keys = []
 
         for key in key_data:
-            TransponderKey.objects.create()
-            p = self._get_or_create_link(key)
-            print(p)
+            base_keys = Key.objects.filter(id=key.get('id'))
+            
+            if base_keys:
+                tk = TransponderKey.objects.filter(id=key.get('id'))
+                if tk:
+                    print('Key is already of TransponderKey type.')
+                else:
+                    tkey = TransponderKey(key_ptr=base_keys[0], sku=key.get('sku'))
+                    tkey.save_base(raw=True)
+                    print(tkey)
 
-            output_keys.append(p)
+                    output_keys.append(tkey)
+            else:
+                print('Key not found.')
 
-        print('\nValid links created or updated successfully.')
+        print('\nValid Keys converted to TransponderKey type.')
 
         return output_keys
 
-    def _generate_link_data_output_workbook(self, keys, file_name):
+    def _generate_key_data_output_workbook(self, keys, file_name):
         wb = openpyxl.Workbook()
         sheet = wb['Sheet']
 
