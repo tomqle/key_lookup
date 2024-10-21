@@ -15,7 +15,7 @@ class TransponderKey(Key):
     sku = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return '(id: ' + str(self.id) + ') ' + self.name
 
 class KeyShell(models.Model):
     name = models.CharField(max_length=255)
@@ -23,14 +23,14 @@ class KeyShell(models.Model):
     sku = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return '(id: ' + str(self.id) + ') ' + self.name
 
 class Remote(Key):
     sku = models.CharField(max_length=255)
     fcc = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return '(id: ' + str(self.id) + ') ' + self.name
 
 class RemoteShell(models.Model):
     name = models.CharField(max_length=255)
@@ -38,7 +38,7 @@ class RemoteShell(models.Model):
     sku = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return '(id: ' + str(self.id) + ') ' + self.name
 
 class EmergencyKey(models.Model):
     name = models.CharField(max_length=255)
@@ -46,7 +46,7 @@ class EmergencyKey(models.Model):
     sku = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return '(id: ' + str(self.id) + ') ' + self.name
 
 class VehicleApplication(models.Model):
     key = models.ForeignKey(Key, on_delete=models.CASCADE, blank=True, null=True)

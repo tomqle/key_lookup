@@ -1,12 +1,28 @@
 from django.contrib import admin
 from django.http import HttpResponse
+
+from lookup.forms import DistributorImportForm, DistributorConfirmImportForm
 from lookup.models import Key, Remote, VehicleApplication, Distributor, DistributorKey, KeyShell, RemoteShell, EmergencyKey, TransponderKey, DistributorTransponderKey, DistributorRemote, DistributorKeyShell, DistributorRemoteShell, DistributorEmergencyKey
 from lookup.management.commands.import_product_data import Command
 
 from datetime import datetime
+#from import_export import resources
+#from import_export.admin import ImportExportModelAdmin, ImportMixin
 import pytz
 
 # Register your models here.
+
+'''
+# import_export resources
+class TransponderKeyResource(resources.ModelResource):
+    class Meta:
+        model = TransponderKey;
+
+class DistributorTransponderKeyResource(resources.ModelResource):
+    class Meta:
+        model = DistributorTransponderKey;
+'''
+
 
 class VehicleApplicationInLine(admin.TabularInline):
     model = VehicleApplication
@@ -45,7 +61,10 @@ class VehicleApplicationInLine(admin.TabularInline):
     #readonly_fields = ('id', )
 
 @admin.register(TransponderKey)
-class TransponderKey(admin.ModelAdmin):
+class TransponderKeyAdmin(admin.ModelAdmin):
+#class TransponderKeyAdmin(ImportExportModelAdmin):
+    #resource_classes = [TransponderKeyResource]
+
     inlines = [
         VehicleApplicationInLine,
     ]
@@ -191,29 +210,73 @@ class DistributorKeyInLine(admin.TabularInline):
 
 class DistributorTransponderKeyInLine(admin.TabularInline):
     model = DistributorTransponderKey
+    ordering = ('transponder_key__id', 'id', )
 
 class DistributorRemoteInLine(admin.TabularInline):
     model = DistributorRemote
+    ordering = ('remote__id', 'id', )
 
 class DistributorKeyShellInLine(admin.TabularInline):
     model = DistributorKeyShell
+    ordering = ('key_shell__id', 'id', )
 
 class DistributorRemoteShellInLine(admin.TabularInline):
     model = DistributorRemoteShell
+    ordering = ('remote_shell__id', 'id', )
 
 class DistributorEmergencyKeyInLine(admin.TabularInline):
     model = DistributorEmergencyKey
+    ordering = ('emergency_key__id', 'id', )
 
 @admin.register(Distributor)
 class DistributorAdmin(admin.ModelAdmin):
     inlines = [
-        DistributorKeyInLine,
-        #DistributorTransponderKeyInLine,
-        #DistributorRemoteInLine,
-        #DistributorKeyShellInLine,
-        #DistributorRemoteShellInLine,
-        #DistributorEmergencyKeyInLine,
+        DistributorTransponderKeyInLine,
+        DistributorRemoteInLine,
+        DistributorKeyShellInLine,
+        DistributorRemoteShellInLine,
+        DistributorEmergencyKeyInLine,
     ]
 
     list_display = ('name', 'code', )
     readonly_fields = ('code', 'id', )
+
+'''
+@admin.register(DistributorTransponderKey)
+#class DistributorTransponderKeyAdmin(ImportExportModelAdmin):
+class DistributorTransponderKeyAdmin(ImportMixin, admin.ModelAdmin):
+    list_display = ['distributor__name', 'transponder_key_id', 'transponder_key__name', 'link']
+    list_filter = ['distributor__name']
+
+    resource_classes = [DistributorTransponderKeyResource]
+    import_form_class = DistributorImportForm
+    confirm_form_class = DistributorConfirmImportForm
+
+    def get_confirm_form_initial(self, request, import_form):
+        print ('get_confirm_form_initial')
+        initial = super().get_confirm_form_initial(request, import_form)
+
+        print(initial)
+        print(import_form)
+        print(import_form.cleaned_data['distributor'])
+
+        # Pass on the `author` value from the import form to
+        # the confirm form (if provided)
+        if import_form:
+            initial['distributor'] = import_form.cleaned_data['distributor'].id
+        return initial
+
+    def get_import_data_kwargs(self, request, *args, **kwargs):
+        print('kwargs: ')
+        print(kwargs)
+        form = kwargs.get("form", None)
+        print(form)
+        if form and hasattr(form, "cleaned_data"):
+            kwargs.update({"distributor": form.cleaned_data.get("distributor", None)})
+        return kwargs
+    
+    def after_init_instance(self, instance, new, row, **kwargs):
+        print ('after_init_instance')
+        if "distributor" in kwargs:
+            instance.distributor = kwargs["distributor"]
+'''
