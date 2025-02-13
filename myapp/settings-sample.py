@@ -147,6 +147,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+FORMAT_MODULE_PATH = 'lookup.formats'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -164,3 +165,11 @@ SECURE_SSL_REDIRECT = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Admin notice - option between top banner or ribbon
+#ADMIN_NOTICE_SHOW = True
+#ADMIN_NOTICE_FLOAT = True
+#ADMIN_NOTICE_TEXT = 'DEV'
+#ADMIN_NOTICE_COLOR = 'green'
+#ADMIN_NOTICE_COLOR_TEXT = 'white'
+#ADMIN_NOTICE_RIBBON = True # Pre-requisite: ADMIN_NOTICE_SHOW set to True

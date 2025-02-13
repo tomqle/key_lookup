@@ -1,0 +1,69 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+{% if ADMIN_NOTICE_SHOW %}
+<!-- Environment notice -->
+{% if not ADMIN_NOTICE_RIBBON %} <!-- github dizballanze/django-admin-env-notice  -->
+<style type="text/css"{% if request.csp_nonce %} nonce="{{ request.csp_nonce }}"{% endif %}>
+    {{ ENVIRONMENT_ADMIN_SELECTOR }}:before {
+        display: block;
+        line-height: 35px;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: {{ ADMIN_NOTICE_COLOR_TEXT }};
+        content: "{{ ADMIN_NOTICE_TEXT }}";
+        background-color: {{ ADMIN_NOTICE_COLOR }};
+        {% if ADMIN_NOTICE_FLOAT %}
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        {% endif %}
+    }
+    {% if ADMIN_NOTICE_FLOAT %}
+    body {
+      /* workaround for sticky not sticking on long pages (see https://stackoverflow.com/a/59193260) */
+      height: auto;
+    }
+    {% endif %}
+</style>
+{% else %} <!-- github skioo/django-admin-ribbon -->
+<style type="text/css">
+    body:before {
+        width: 200px;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: fixed;
+        display: block;
+        top: auto;
+        left: auto;
+        right: -50px;
+        bottom: 25px;
+        transform: rotate(-45deg);
+        z-index: 9;
+
+        line-height: 35px;
+        text-align: center;
+        color: {{ ADMIN_NOTICE_COLOR_TEXT }};
+
+        font-size: 1.2em;
+
+        content: "{{ ADMIN_NOTICE_TEXT }}";
+        background-color: {{ ADMIN_NOTICE_COLOR }};
+    }
+</style>
+{% endif %}
+{% endif %}
+{% endblock %}

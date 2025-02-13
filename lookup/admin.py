@@ -11,43 +11,20 @@ import pytz
 class VehicleApplicationInLine(admin.TabularInline):
     model = VehicleApplication
     fields = ('vehicle_range',)
+    extra = 0
+    ordering = ['vehicle_range']
 
-#@admin.register(Key)
-#class KeyAdmin(admin.ModelAdmin):
-    #inlines = [
-        #VehicleApplicationInLine,
-        #]
-    #def get_queryset(self, request):
-        #ids = Remote.objects.values_list('id', flat=True)
-        #queryset = Key.objects.exclude(id__in=ids)
 
-        #return queryset
-    
-    #def export_as_excel(self, request, queryset):
-
-        #timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
-        #filename = 'key_export_' + timestamp + '.xlsx'
-        #path = 'static/excel/' + filename
-
-        #com = Command()
-        #com._generate_product_data_output_workbook(queryset, path)
-
-        #with open(path, "rb") as excel:
-            #data = excel.read()
-
-            #response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            #response['Content-Disposition'] = 'attachment; filename=' + filename
-
-        #return response
-
-    #actions = ('export_as_excel',)
-    #list_display = ('name', 'id', )
-    #readonly_fields = ('id', )
+class DistributorTransponderKeyInLine(admin.TabularInline):
+    model = DistributorTransponderKey
+    extra = 0
+    ordering = ['distributor__name']
 
 @admin.register(TransponderKey)
 class TransponderKey(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
+        DistributorTransponderKeyInLine,
     ]
 
     def export_as_excel(self, request, queryset):
@@ -68,14 +45,23 @@ class TransponderKey(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-    list_display = ('name', 'id', )
-    readonly_fields = ('id', )
+    list_display = ('id', 'sku', 'name', 'updated_at', )
+    list_display_links = ('id', 'sku', 'name', )
+    search_fields = ['id', 'name', 'sku']
+    readonly_fields = ('id', 'created_at', 'updated_at', )
+    ordering = ['-updated_at']
 
+
+class DistributorRemoteInLine(admin.TabularInline):
+    model = DistributorRemote
+    extra = 0
+    ordering = ['distributor__name']
 
 @admin.register(Remote)
 class RemoteAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
+        DistributorRemoteInLine,
         ]
 
     def export_as_excel(self, request, queryset):
@@ -95,13 +81,24 @@ class RemoteAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-    list_display = ('name', 'id', )
-    readonly_fields = ('id', )
+    list_display = ('id', 'sku', 'name', 'updated_at', )
+    list_display_links = ('id', 'sku', 'name', )
+    search_fields = ['id', 'name', 'sku']
+    readonly_fields = ('id', 'created_at', 'updated_at', )
+    ordering = ['-updated_at']
+
+
+class DistributorKeyShellInLine(admin.TabularInline):
+    model = DistributorKeyShell
+    extra = 0
+    ordering = ['distributor__name']
+
 
 @admin.register(KeyShell)
 class KeyShellAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
+        DistributorKeyShellInLine,
         ]
 
     def export_as_excel(self, request, queryset):
@@ -121,14 +118,24 @@ class KeyShellAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-    list_display = ('name', 'id', )
-    readonly_fields = ('id', )
+    list_display = ('id', 'sku', 'name', 'updated_at', )
+    list_display_links = ('id', 'sku', 'name', )
+    search_fields = ['id', 'name', 'sku']
+    readonly_fields = ('id', 'created_at', 'updated_at', )
     exclude = ('key', )
+    ordering = ['-updated_at']
+
+
+class DistributorRemoteShellInLine(admin.TabularInline):
+    model = DistributorRemoteShell
+    extra = 0
+    ordering = ['distributor__name']
 
 @admin.register(RemoteShell)
 class RemoteShellAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
+        DistributorRemoteShellInLine,
         ]
 
     def export_as_excel(self, request, queryset):
@@ -148,14 +155,24 @@ class RemoteShellAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-    list_display = ('name', 'id', )
-    readonly_fields = ('id', )
+    list_display = ('id', 'sku', 'name', 'updated_at', )
+    list_display_links = ('id', 'sku', 'name', )
+    search_fields = ['id', 'name', 'sku']
+    readonly_fields = ('id', 'created_at', 'updated_at', )
     exclude = ('remote', )
+    ordering = ['-updated_at']
+
+
+class DistributorEmergencyKeyInLine(admin.TabularInline):
+    model = DistributorEmergencyKey
+    extra = 0
+    ordering = ['distributor__name']
 
 @admin.register(EmergencyKey)
 class EmergencyKeyAdmin(admin.ModelAdmin):
     inlines = [
         VehicleApplicationInLine,
+        DistributorEmergencyKeyInLine,
         ]
 
     def export_as_excel(self, request, queryset):
@@ -175,8 +192,11 @@ class EmergencyKeyAdmin(admin.ModelAdmin):
         return response
 
     actions = ('export_as_excel',)
-    list_display = ('name', 'id', )
-    readonly_fields = ('id', )
+    list_display = ('id', 'sku', 'name', 'updated_at', )
+    list_display_links = ('id', 'sku', 'name', )
+    search_fields = ['id', 'name', 'sku']
+    readonly_fields = ('id', 'created_at', 'updated_at', )
+    ordering = ['-updated_at']
 
 class DistributorKeyInLine(admin.TabularInline):
     model = DistributorKey
@@ -189,31 +209,10 @@ class DistributorKeyInLine(admin.TabularInline):
 
         return queryset
 
-class DistributorTransponderKeyInLine(admin.TabularInline):
-    model = DistributorTransponderKey
-
-class DistributorRemoteInLine(admin.TabularInline):
-    model = DistributorRemote
-
-class DistributorKeyShellInLine(admin.TabularInline):
-    model = DistributorKeyShell
-
-class DistributorRemoteShellInLine(admin.TabularInline):
-    model = DistributorRemoteShell
-
-class DistributorEmergencyKeyInLine(admin.TabularInline):
-    model = DistributorEmergencyKey
-
 @admin.register(Distributor)
 class DistributorAdmin(admin.ModelAdmin):
-    inlines = [
-        DistributorKeyInLine,
-        #DistributorTransponderKeyInLine,
-        #DistributorRemoteInLine,
-        #DistributorKeyShellInLine,
-        #DistributorRemoteShellInLine,
-        #DistributorEmergencyKeyInLine,
-    ]
-
-    list_display = ('name', 'code', )
-    readonly_fields = ('code', 'id', )
+    list_display = ('id', 'name', 'code', 'updated_at', )
+    list_display_links = ('id', 'name', 'code', )
+    search_fields = ['id', 'name', 'website', 'code']
+    readonly_fields = ('id', 'code', 'created_at', 'updated_at', )
+    ordering = ['-updated_at']
