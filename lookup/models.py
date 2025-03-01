@@ -5,7 +5,14 @@ from django.db import models
 
 # Create your models here.
 
-class Key(models.Model):
+class BaseModel(models.Model) :
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Key(BaseModel):
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -17,7 +24,7 @@ class TransponderKey(Key):
     def __str__(self):
         return self.name
 
-class KeyShell(models.Model):
+class KeyShell(BaseModel):
     name = models.CharField(max_length=255)
     key = models.ForeignKey(Key, on_delete=models.PROTECT, blank=True, null=True)
     sku = models.CharField(max_length=255)
@@ -32,7 +39,7 @@ class Remote(Key):
     def __str__(self):
         return self.name
 
-class RemoteShell(models.Model):
+class RemoteShell(BaseModel):
     name = models.CharField(max_length=255)
     remote = models.ForeignKey(Remote, on_delete=models.PROTECT, blank=True, null=True)
     sku = models.CharField(max_length=255)
@@ -40,7 +47,7 @@ class RemoteShell(models.Model):
     def __str__(self):
         return self.name
 
-class EmergencyKey(models.Model):
+class EmergencyKey(BaseModel):
     name = models.CharField(max_length=255)
     remote = models.ForeignKey(Remote, on_delete=models.PROTECT, blank=True, null=True)
     sku = models.CharField(max_length=255)
@@ -48,7 +55,7 @@ class EmergencyKey(models.Model):
     def __str__(self):
         return self.name
 
-class VehicleApplication(models.Model):
+class VehicleApplication(BaseModel):
     key = models.ForeignKey(Key, on_delete=models.CASCADE, blank=True, null=True)
     key_shell = models.ForeignKey(KeyShell, on_delete=models.CASCADE, blank=True, null=True)
     remote_shell = models.ForeignKey(RemoteShell, on_delete=models.CASCADE, blank=True, null=True)
@@ -58,7 +65,7 @@ class VehicleApplication(models.Model):
     def __str__(self):
         return self.vehicle_range
 
-class Distributor(models.Model):
+class Distributor(BaseModel):
     name = models.CharField(max_length=255, unique=True)
     code = models.CharField(max_length=16, blank=True, null=True, unique=True, editable=False)
     logo = models.ImageField(upload_to='distributor_logos/', blank=True, null=True)
@@ -79,7 +86,7 @@ class Distributor(models.Model):
     def __str__(self):
         return self.name
 
-class DistributorKey(models.Model):
+class DistributorKey(BaseModel):
     distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
     key = models.ForeignKey(Key, on_delete=models.CASCADE)
     link = models.URLField(max_length=1024, blank=True)
@@ -87,7 +94,7 @@ class DistributorKey(models.Model):
     class Meta:
         unique_together = ('distributor', 'key')
 
-class DistributorTransponderKey(models.Model):
+class DistributorTransponderKey(BaseModel):
     distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
     transponder_key = models.ForeignKey(TransponderKey, on_delete=models.CASCADE)
     link = models.URLField(max_length=1024, blank=True)
@@ -95,15 +102,18 @@ class DistributorTransponderKey(models.Model):
     class Meta:
         unique_together = ('distributor', 'transponder_key')
 
-class DistributorRemote(models.Model):
+class DistributorRemote(BaseModel):
     distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
     remote = models.ForeignKey(Remote, on_delete=models.CASCADE)
     link = models.URLField(max_length=1024, blank=True)
 
+    def __str__(self):
+        return f"{ self.distributor.name } [{ self.link }]"
+
     class Meta:
         unique_together = ('distributor', 'remote')
 
-class DistributorKeyShell(models.Model):
+class DistributorKeyShell(BaseModel):
     distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
     key_shell = models.ForeignKey(KeyShell, on_delete=models.CASCADE)
     link = models.URLField(max_length=1024, blank=True)
@@ -111,7 +121,7 @@ class DistributorKeyShell(models.Model):
     class Meta:
         unique_together = ('distributor', 'key_shell')
 
-class DistributorRemoteShell(models.Model):
+class DistributorRemoteShell(BaseModel):
     distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
     remote_shell = models.ForeignKey(RemoteShell, on_delete=models.CASCADE)
     link = models.URLField(max_length=1024, blank=True)
@@ -119,7 +129,7 @@ class DistributorRemoteShell(models.Model):
     class Meta:
         unique_together = ('distributor', 'remote_shell')
 
-class DistributorEmergencyKey(models.Model):
+class DistributorEmergencyKey(BaseModel):
     distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
     emergency_key = models.ForeignKey(EmergencyKey, on_delete=models.CASCADE)
     link = models.URLField(max_length=1024, blank=True)
