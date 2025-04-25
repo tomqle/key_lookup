@@ -212,7 +212,7 @@ class DistributorKeyInLine(admin.TabularInline):
 @admin.register(Distributor)
 class DistributorAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'code', 'updated_at', )
-    list_display_links = ('id', 'name', 'code', )
+    list_display_links = ('id', 'name', )
     search_fields = ['id', 'name', 'website', 'code']
     readonly_fields = ('id', 'code', 'created_at', 'updated_at', )
     ordering = ['-updated_at']
