@@ -3,9 +3,9 @@
 {% block content %}
   {% if logo_url %}
     {% if website %}
-      <a target="_blank" href="{{ website }}"><img src="{{ logo_url }}" alt="logo" height="75px"></a>
+      <a target="_blank" href="{{ website }}"><img src="{{ logo_url }}" alt="logo" height="{{ logo_height }}"></a>
     {% else %}
-      <img src="{{ logo_url }}" alt="logo" height="75px">
+      <img src="{{ logo_url }}" alt="logo" height="{{ logo_height }}">
     {% endif %}
   {% endif %}
   <h2>{{ shell.name }}</h2>

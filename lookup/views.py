@@ -28,6 +28,7 @@ class KeyView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                    context['logo_height'] = str(distributors[0].logo_height) + 'px'
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
@@ -59,6 +60,7 @@ class RemoteView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                    context['logo_height'] = str(distributors[0].logo_height) + 'px'
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
@@ -90,6 +92,7 @@ class ShellView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                    context['logo_height'] = str(distributors[0].logo_height) + 'px'
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
@@ -121,6 +124,7 @@ class KeyShellView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                    context['logo_height'] = distributors[0].logo_height
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
@@ -153,6 +157,7 @@ class RemoteShellView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                    context['logo_height'] = distributors[0].logo_height
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 
@@ -185,6 +190,7 @@ class EmergencyKeyView(TemplateView):
             if distributors:
                 if distributors[0].logo:
                     context['logo_url'] = distributors[0].logo.url
+                    context['logo_height'] = distributors[0].logo_height
                 if distributors[0].website:
                     context['website'] = distributors[0].website
 

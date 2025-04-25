@@ -69,6 +69,7 @@ class Distributor(BaseModel):
     name = models.CharField(max_length=255, unique=True)
     code = models.CharField(max_length=16, blank=True, null=True, unique=True, editable=False)
     logo = models.ImageField(upload_to='distributor_logos/', blank=True, null=True)
+    logo_height = models.IntegerField(default=75)
     website = models.URLField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
