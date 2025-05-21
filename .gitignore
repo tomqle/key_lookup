@@ -6,6 +6,8 @@ __pycache__
 db.sqlite3
 media
 static/excel/
+static/admin/
+static/import_export/
 myapp/settings.py
 
 # Backup files # 
