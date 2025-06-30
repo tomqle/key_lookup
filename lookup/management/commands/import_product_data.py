@@ -13,10 +13,16 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--file', type=str)
+        parser.add_argument('--delete_vehicles_first', type=str)
 
     def handle(self, *args, **options):
         try:
             file_name = options['file']
+            delete_vehicles_first = options['delete_vehicles_first']
+            delete_vehicles = False
+            if delete_vehicles_first:
+                if delete_vehicles_first.lower() == 'yes':
+                    delete_vehicles = True
             if file_name:
                 wb = openpyxl.load_workbook(file_name)
                 sheet1 = wb[wb.sheetnames[0]]
@@ -29,7 +35,7 @@ class Command(BaseCommand):
                     vehicle_applications = self._read_vehicle_application_from_excel(sheet2)
 
                     product_dict = self._bulk_create_or_get_products(product_data)
-                    self._bulk_create_or_get_vehicle_applications(vehicle_applications)
+                    self._bulk_create_or_get_vehicle_applications(vehicle_applications, delete_vehicles)
 
                     timestamp = datetime.now(pytz.timezone('US/Pacific')).strftime('%Y%m%d_%H%M%S')
                     output_file = 'static/excel/output_file_' + timestamp + '.xlsx'
@@ -37,6 +43,8 @@ class Command(BaseCommand):
                     self._generate_product_data_output_workbook(product_dict, output_file)
 
                     print('\nImport results saved to ' + output_file + '.')
+            else:
+                print('missing args --file for command import_product_data')
         except ValueError as e:
             pass
 
@@ -103,9 +111,10 @@ class Command(BaseCommand):
                 sku = str(sheet.cell(row, self.COL_INDEX_SKU_1).value)
             name = str(sheet.cell(row, self.COL_INDEX_NAME_1).value)
             product_type = str(sheet.cell(row, self.COL_INDEX_TYPE_1).value)
-            product_data.append({   'sku': sku,
-                                    'name': name,
-                                    'type': product_type })
+            if sku != 'None' and name != 'None' and product_type != 'None':
+                product_data.append({   'sku': sku,
+                                        'name': name,
+                                        'type': product_type })
 
         print('\nProduct data read from excel successfully.')
         print(product_data)
@@ -121,10 +130,11 @@ class Command(BaseCommand):
                 sku = str(sheet.cell(row, self.COL_INDEX_SKU_2).value)
             vehicle = str(sheet.cell(row, self.COL_INDEX_VEHICLE_2).value)
 
-            if not sku in vehicle_applications.keys():
+            if not sku in vehicle_applications.keys() and sku != 'None':
                 vehicle_applications[sku] = []
 
-            vehicle_applications[sku].append(vehicle)
+            if sku != 'None' and vehicle != 'None':
+                vehicle_applications[sku].append(vehicle)
         
         print('\nVehicle application data read from excel succesfully.')
         print(vehicle_applications)
@@ -144,22 +154,29 @@ class Command(BaseCommand):
 
         return output_keys
     
-    def _bulk_create_or_get_vehicle_applications(self, vehicle_dict):
+    def _bulk_create_or_get_vehicle_applications(self, vehicle_dict, delete_vehicles):
         vehicle_applications = []
         for sku in vehicle_dict.keys():
             product_obj = self._get_product_by_sku(sku)
             if product_obj != None:
                 for vehicle in vehicle_dict[sku]:
-                    if not product_obj.vehicleapplication_set.filter(vehicle_range=vehicle):
-                        if isinstance(product_obj, Key):
-                            vehicle_applications.append(VehicleApplication(key_id=product_obj.id, vehicle_range=vehicle))
-                        elif isinstance(product_obj, KeyShell):
-                            vehicle_applications.append(VehicleApplication(key_shell_id=product_obj.id, vehicle_range=vehicle))
-                        elif isinstance(product_obj, RemoteShell):
-                            vehicle_applications.append(VehicleApplication(remote_shell_id=product_obj.id, vehicle_range=vehicle))
-                        elif isinstance(product_obj, EmergencyKey):
-                            vehicle_applications.append(VehicleApplication(emergency_key_id=product_obj.id, vehicle_range=vehicle))
-        
+                    if isinstance(product_obj, Key):
+                        if delete_vehicles:
+                            VehicleApplication.objects.filter(key_id=product_obj.id).delete()
+                        vehicle_applications.append(VehicleApplication(key_id=product_obj.id, vehicle_range=vehicle))
+                    elif isinstance(product_obj, KeyShell):
+                        if delete_vehicles:
+                            VehicleApplication.objects.filter(key_shell_id=product_obj.id).delete()
+                        vehicle_applications.append(VehicleApplication(key_shell_id=product_obj.id, vehicle_range=vehicle))
+                    elif isinstance(product_obj, RemoteShell):
+                        if delete_vehicles:
+                            VehicleApplication.objects.filter(remote_shell_id=product_obj.id).delete()
+                        vehicle_applications.append(VehicleApplication(remote_shell_id=product_obj.id, vehicle_range=vehicle))
+                    elif isinstance(product_obj, EmergencyKey):
+                        if delete_vehicles:
+                            VehicleApplication.objects.filter(emergency_key_id=product_obj.id).delete()
+                        vehicle_applications.append(VehicleApplication(emergency_key_id=product_obj.id, vehicle_range=vehicle))
+
         VehicleApplication.objects.bulk_create(vehicle_applications)
 
         print('\nVehicle application data created successfully.')
